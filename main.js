@@ -1,4 +1,5 @@
-let url = 'https://opendata.muenchen.de/dataset/3621ad08-aa97-4c2b-b0b0-82780375743c/resource/4f00274a-ef75-41e5-b5c1-15f22c9f8a12/download/monatszahlen2209_tourismus.csv';
+// let url = 'https://opendata.muenchen.de/dataset/3621ad08-aa97-4c2b-b0b0-82780375743c/resource/4f00274a-ef75-41e5-b5c1-15f22c9f8a12/download/monatszahlen2209_tourismus.csv';
+let url = 'https://raw.githubusercontent.com/erdermus/erdermus.github.io/main/tourismus.csv?token=GHSAT0AAAAAAB4EUH4OUPS52IWXVXBHNDAKY4SG3KQ';
 
 let margin = {top: 50, right: 50, bottom: 50, left: 50};
 let width = 800;
@@ -11,7 +12,6 @@ let svg = d3.select('#tour19')
     .append('g')
     .attr('viewBox', [0, 0, width, height])
     .attr('transform', `translate(${60}, ${margin.top-margin.bottom})`);
-
 
 d3.csv(url).then(function(data){
     data.forEach(function(d){ 

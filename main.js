@@ -20,14 +20,14 @@ d3.csv(url).then(function(data){
         d['WERT'] = +d['WERT']; 
     });
     let selectedData = data.filter(function (d) {
-        return d.JAHR >= 2018 &&
+        return d.JAHR >= 2019 &&
         !isNaN(d.MONAT) &&
         d.AUSPRÄGUNG == 'insgesamt';
     });
 
-    data = selectedData.filter( d => d.JAHR == 2018 && d.MONATSZAHL == 'Gäste').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
+    data = selectedData.filter( d => d.JAHR == 2019 && d.MONATSZAHL == 'Gäste').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
 
-    let groups = [2018, 2019, 2020, 2021, 2022];
+    let groups = [2019, 2020, 2021, 2022];
     let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     d3.select('#year-select')
         .selectAll('myOptions')
@@ -90,6 +90,6 @@ d3.csv(url).then(function(data){
         update(selectedYear)
     });
 
-    update(2018);
+    update(2019);
     svg.node();
 });

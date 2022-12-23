@@ -5,6 +5,7 @@
     <head>
         <title>InfoVis</title>
         <link rel="stylesheet" href="./bootstrap.min.css" type="text/css"/>
+        <link rel="stylesheet" href="main.css" type="text/css" />
         <script src="https://d3js.org/d3.v7.min.js"></script>
     </head>
     <body>
@@ -43,10 +44,23 @@
             </div>
         </section>
 
-        <div>
-            <select id="year-select"></select>
-            <div id="tour19"></div>
-            <script src="main.js"></script>
+        <div class="container">
+            <div class="row align-items-center position-relative">
+                <div class="col-lg-6">
+                    <label for="years">Select a year:</label><br/>
+                    <input type="range" id="years" name="years" list="tickyear" min="2019" max="2022" value="2019" onchange="selectedYear(this)"/>
+                    <datalist id="tickyear">
+                        <option value="2019" label="2019"></option>
+                        <option value="2020" label="2020"></option>
+                        <option value="2021" label="2021"></option>
+                        <option value="2022" label="2022"></option>
+                    </datalist>
+
+                    <div class="year-content">2019</div>
+                    <div id="tourism-data"></div>
+                    <script src="main.js"></script>
+                </div>
+            </div>
         </div>
 
         <div>

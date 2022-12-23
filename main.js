@@ -1,11 +1,10 @@
-// let url = 'https://opendata.muenchen.de/dataset/3621ad08-aa97-4c2b-b0b0-82780375743c/resource/4f00274a-ef75-41e5-b5c1-15f22c9f8a12/download/monatszahlen2209_tourismus.csv';
 let url = 'https://erdermus.github.io/tourismus.csv'
 
 let margin = {top: 50, right: 50, bottom: 50, left: 50};
 let width = 800;
 let height = 400;
 
-let svg = d3.select('#tour19')
+let svg = d3.select('#tourism-data')
     .append('svg')
     .attr('width', width + margin.left + margin.right)
     .attr('height', height + margin.top + margin.bottom)
@@ -29,7 +28,7 @@ d3.csv(url).then(function(data){
 
     let groups = [2019, 2020, 2021, 2022];
     let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    d3.select('#year-select')
+    d3.select('#years')
         .selectAll('myOptions')
         .data(groups)
         .enter()
@@ -85,7 +84,7 @@ d3.csv(url).then(function(data){
         newbar.exit().remove();
     }
     
-    d3.select('#year-select').on('change', function(d) {
+    d3.select('#years').on('change', function(d) {
         let selectedYear = d3.select(this).property('value')
         update(selectedYear)
     });
@@ -93,3 +92,17 @@ d3.csv(url).then(function(data){
     update(2019);
     svg.node();
 });
+
+function selectedYear(elem) {
+    let options = document.getElementById('tickyear').getElementsByTagName('option');
+    let value = [];
+    for (let i = 0; i < options.length; i+=1) {
+        value.push(options[i].value);
+    }
+    const result = document.querySelector('.year-content');
+    result.textContent = elem.value;
+    const log = document.getElementById('log');
+    //if (value.indexOf(elem.value) > -1) {
+    //    console.log(elem.value);
+    //}
+}

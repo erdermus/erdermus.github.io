@@ -1,7 +1,7 @@
 let url = 'https://erdermus.github.io/tourismus.csv'
 
 let margin = {top: 50, right: 50, bottom: 50, left: 50};
-let width = 800;
+let width = 600;
 let height = 400;
 
 let svg = d3.select('#tourism-data')

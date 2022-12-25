@@ -61,15 +61,7 @@ Promise.all([
     });
     console.log(data)
 
-    let groups = [2019, 2020, 2021, 2022];
     let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    d3.select('#years')
-        .selectAll('myOptions')
-        .data(groups)
-        .enter()
-        .append('option')
-        .text(function(d) { return d; })
-        .attr("value", function(d) { return d; });
 
     let x = d3.scaleBand()
         .range([0, width])

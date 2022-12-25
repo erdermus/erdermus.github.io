@@ -14,27 +14,52 @@ let svg = d3.select('#tourism-data')
     .attr('viewBox', [0, 0, width, height])
     .attr('transform', `translate(${60}, ${margin.top-margin.bottom})`);
 
+let svg2 = d3.select('#air-data')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g')
+    .attr('viewBox', [0, 0, width, height])
+    .attr('transform', `translate(${60}, ${margin.top-margin.bottom})`);
+
 Promise.all([
     d3.csv(tourismus),
     d3.csv(flugverkehr),
     d3.csv(arbeitsmarkt)
 ]).then(function(data){
-    let data1 = data[0];
-    let data2 = data[1];
-    let data3 = data[2];
+    // data = [tourismus-data, flugverkehr-data, arbeitsmarkt-data]
 
-    data1.forEach(function(d){ 
-        d['JAHR'] = +d['JAHR'];
-        d['MONAT'] = +d['MONAT'];
-        d['WERT'] = +d['WERT']; 
-    });
-    let selectedData = data1.filter(function (d) {
-        return d.JAHR >= 2019 &&
-        !isNaN(d.MONAT) &&
-        d.AUSPRÄGUNG == 'insgesamt';
+    // transform for each data the string values into actuel numbers
+    data.forEach( d => {
+        d.forEach( da => {
+            da['JAHR'] = +da['JAHR'];
+            da['MONAT'] = +da['MONAT'];
+            da['WERT'] = +da['WERT'];
+        });
     });
 
-    data1 = selectedData.filter( d => d.JAHR == 2019 && d.MONATSZAHL == 'Gäste').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
+    // filter the data for the time period after 2019 and for 'insgesamt'
+    let selectedData = [];
+    data.forEach( (d, i) => {
+        selectedData[i] = d.filter( da => {
+            return da.JAHR >= 2019 &&
+            !isNaN(da.MONAT) &&
+            da.AUSPRÄGUNG == 'insgesamt';
+        });
+    });
+    console.log(selectedData)
+
+    // filter and select the actual data to visualize
+    data.forEach( (d, i) => {
+        if (i === 0) {
+            data[i] = selectedData[0].filter( da => da.JAHR == 2019 && da.MONATSZAHL == 'Gäste').map( da => {return {MONAT: da.MONAT, WERT: da.WERT}})
+        } else if (i === 1) {
+            data[i] = selectedData[1].filter( da => da.JAHR == 2019 && da.MONATSZAHL == 'Fluggäste').map( da => {return {MONAT: da.MONAT, WERT: da.WERT}});
+        } else if (i === 2) {
+            data[i] = selectedData[2].filter( da => da.JAHR == 2019 && da.MONATSZAHL == 'Arbeitslose').map( da => {return {MONAT: da.MONAT, WERT: da.WERT}});
+        }
+    });
+    console.log(data)
 
     let groups = [2019, 2020, 2021, 2022];
     let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -48,7 +73,7 @@ Promise.all([
 
     let x = d3.scaleBand()
         .range([0, width])
-        .domain(data1.map(function(d) { return d.MONAT; }))
+        .domain(data[0].map(function(d) { return d.MONAT; }))
         .padding(0.2);
     svg.append('g')
         .attr('transform', `translate(0, ${height})`)
@@ -64,7 +89,7 @@ Promise.all([
         .call(d3.axisLeft(y));
 
     svg.selectAll('mybar')
-        .data(data1)
+        .data(data[0])
         .enter()
         .append('rect')
             .attr('x', function(d) { return x(d.MONAT); })
@@ -74,10 +99,12 @@ Promise.all([
             .attr('fill', '#B0ABF1');
 
     function update(selectedYear) {
-        let dataFilter = selectedData.filter( d => d.JAHR == selectedYear && d.MONATSZAHL == 'Gäste').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
+        let dataFilter1 = selectedData[0].filter( d => d.JAHR == selectedYear && d.MONATSZAHL == 'Gäste').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
+        let dataFilter2 = selectedData[1].filter( d => d.JAHR == selectedYear && d.MONATSZAHL == 'Fluggäste').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
+        let dataFilter3 = selectedData[2].filter( d => d.JAHR == selectedYear && d.MONATSZAHL == 'Arbeitslose').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
 
         let newbar = svg.selectAll('rect')
-            .data(dataFilter);
+            .data(dataFilter1);
 
         newbar.enter()
             .append('rect')

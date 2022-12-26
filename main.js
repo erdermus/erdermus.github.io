@@ -24,6 +24,15 @@ let svg2 = d3.select('#air-data')
     .attr('viewBox', [0, 0, width, height])
     .attr('transform', `translate(${60}, ${margin.top-margin.bottom})`);
 
+// svg [plot] for market-data
+let svg3 = d3.select('#market-data')
+    .append('svg')
+    .attr('width', width + margin.left + margin.right)
+    .attr('height', height + margin.top + margin.bottom)
+    .append('g')
+    .attr('viewBox', [0, 0, width, height])
+    .attr('transform', `translate(${60}, ${margin.top-margin.bottom})`);
+
 // load all csv-data files and stores it into parameter 'data' -> data = [tourismus, flugverkehr, arbeitsmarkt]
 Promise.all([
     d3.csv(tourismus),
@@ -117,6 +126,34 @@ Promise.all([
             .attr('width', x2.bandwidth())
             .attr('height', function(d) { return height - y2(d.WERT); })
             .attr('fill', '#44CBEC');
+
+    // x Axis for market-data
+    let x3 = d3.scaleBand()
+        .range([0, width])
+        .domain(data[2].map(function(d) { return d.MONAT; }))
+        .padding(0.2);
+    svg3.append('g')
+        .attr('transform', `translate(0, ${height})`)
+        .call(d3.axisBottom(x3).tickFormat((d,i) => months[i]))
+        .selectAll('text')
+            .attr('transform', 'translate(-10,0)rotate(-45)')
+            .style('text-anchor', 'end')
+    // y Axis for market-data
+    let y3 = d3.scaleLinear()
+        .domain([0, 49000])
+        .range([height, 0]);
+    svg3.append('g')
+        .call(d3.axisLeft(y3))
+    // add all attributes to plot
+    svg3.selectAll('mybar')
+        .data(data[2])
+        .enter()
+        .append('rect')
+            .attr('x', function(d) { return x3(d.MONAT); })
+            .attr('y', function(d) { return y3(d.WERT); })
+            .attr('width', x3.bandwidth())
+            .attr('height', function(d) { return height - y3(d.WERT); })
+            .attr('fill', '#60AB9A');
     
     // update bar plots after new year has been selected
     function update(selectedYear) {
@@ -155,6 +192,21 @@ Promise.all([
                 .attr('height', function(d) { return height - y2(d.WERT); })
                 .attr('fill', '#44CBEC');
         newbar2.exit().remove();
+
+        // update bar plot for market-data
+        let newbar3 = svg3.selectAll('rect')
+            .data(dataFilter3);
+        newbar3.enter()
+            .append('rect')
+            .merge(newbar3)
+            .transition()
+            .duration(1000)
+                .attr('class', 'rect')
+                .attr('y', function(d) { return y3(+d.WERT) })
+                .attr('width', x3.bandwidth())
+                .attr('height', function(d) { return height - y3(d.WERT); })
+                .attr('fill', '#60AB9A');
+        newbar3.exit().remove();
     }
     
     d3.select('#years').on('change', function(d) {

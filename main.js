@@ -6,6 +6,7 @@ let margin = {top: 50, right: 50, bottom: 50, left: 50};
 let width = 600;
 let height = 400;
 
+// svg [plot] for trousim-data
 let svg = d3.select('#tourism-data')
     .append('svg')
     .attr('width', width + margin.left + margin.right)
@@ -14,6 +15,7 @@ let svg = d3.select('#tourism-data')
     .attr('viewBox', [0, 0, width, height])
     .attr('transform', `translate(${60}, ${margin.top-margin.bottom})`);
 
+// svg [plot] for air-data
 let svg2 = d3.select('#air-data')
     .append('svg')
     .attr('width', width + margin.left + margin.right)
@@ -22,13 +24,12 @@ let svg2 = d3.select('#air-data')
     .attr('viewBox', [0, 0, width, height])
     .attr('transform', `translate(${60}, ${margin.top-margin.bottom})`);
 
+// load all csv-data files and stores it into parameter 'data' -> data = [tourismus, flugverkehr, arbeitsmarkt]
 Promise.all([
     d3.csv(tourismus),
     d3.csv(flugverkehr),
     d3.csv(arbeitsmarkt)
 ]).then(function(data){
-    // data = [tourismus-data, flugverkehr-data, arbeitsmarkt-data]
-
     // transform for each data the string values into actuel numbers
     data.forEach( d => {
         d.forEach( da => {
@@ -47,7 +48,6 @@ Promise.all([
             da.AUSPRÄGUNG == 'insgesamt';
         });
     });
-    console.log(selectedData)
 
     // filter and select the actual data to visualize
     data.forEach( (d, i) => {
@@ -59,10 +59,10 @@ Promise.all([
             data[i] = selectedData[2].filter( da => da.JAHR == 2019 && da.MONATSZAHL == 'Arbeitslose').map( da => {return {MONAT: da.MONAT, WERT: da.WERT}});
         }
     });
-    console.log(data)
 
     let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+    // x Axis for tourism-data
     let x = d3.scaleBand()
         .range([0, width])
         .domain(data[0].map(function(d) { return d.MONAT; }))
@@ -73,13 +73,13 @@ Promise.all([
         .selectAll('text')
             .attr('transform', 'translate(-10,0)rotate(-45)')
             .style('text-anchor', 'end');
-    
+    // y Axis for tourism-data
     let y = d3.scaleLinear()
         .domain([0, 1500000])
         .range([height, 0]);
     svg.append('g')
         .call(d3.axisLeft(y));
-
+    // add all attributes to plot
     svg.selectAll('mybar')
         .data(data[0])
         .enter()
@@ -90,14 +90,44 @@ Promise.all([
             .attr('height', function(d) { return height - y(d.WERT); })
             .attr('fill', '#B0ABF1');
 
+    // x Axis for air-data
+    let x2 = d3.scaleBand()
+        .range([0, width])
+        .domain(data[1].map(function(d) { return d.MONAT; }))
+        .padding(0.2);
+    svg2.append('g')
+        .attr('transform', `translate(0, ${height})`)
+        .call(d3.axisBottom(x2).tickFormat((d,i) => months[i]))
+        .selectAll('text')
+            .attr('transform', 'translate(-10,0)rotate(-45)')
+            .style('text-anchor', 'end')
+    // y Axis for air-data
+    let y2 = d3.scaleLinear()
+        .domain([0, 4900000])
+        .range([height, 0]);
+    svg2.append('g')
+        .call(d3.axisLeft(y2))
+    // add all attributes to plot
+    svg2.selectAll('mybar')
+        .data(data[1])
+        .enter()
+        .append('rect')
+            .attr('x', function(d) { return x2(d.MONAT); })
+            .attr('y', function(d) { return y2(d.WERT); })
+            .attr('width', x2.bandwidth())
+            .attr('height', function(d) { return height - y2(d.WERT); })
+            .attr('fill', '#44CBEC');
+    
+    // update bar plots after new year has been selected
     function update(selectedYear) {
+        // filter data for new selected year
         let dataFilter1 = selectedData[0].filter( d => d.JAHR == selectedYear && d.MONATSZAHL == 'Gäste').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
         let dataFilter2 = selectedData[1].filter( d => d.JAHR == selectedYear && d.MONATSZAHL == 'Fluggäste').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
         let dataFilter3 = selectedData[2].filter( d => d.JAHR == selectedYear && d.MONATSZAHL == 'Arbeitslose').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
 
+        // update bar plot for tourism-data
         let newbar = svg.selectAll('rect')
             .data(dataFilter1);
-
         newbar.enter()
             .append('rect')
             .merge(newbar)
@@ -109,8 +139,22 @@ Promise.all([
                 .attr('width', x.bandwidth())
                 .attr('height', function(d) { return height - y(d.WERT); })
                 .attr('fill', '#B0ABF1');
-
         newbar.exit().remove();
+
+        // update bar plot for air-data
+        let newbar2 = svg2.selectAll('rect')
+            .data(dataFilter2);
+        newbar2.enter()
+            .append('rect')
+            .merge(newbar2)
+            .transition()
+            .duration(1000)
+                .attr('class', 'rect')
+                .attr('y', function(d) { return y2(+d.WERT) })
+                .attr('width', x2.bandwidth())
+                .attr('height', function(d) { return height - y2(d.WERT); })
+                .attr('fill', '#44CBEC');
+        newbar2.exit().remove();
     }
     
     d3.select('#years').on('change', function(d) {

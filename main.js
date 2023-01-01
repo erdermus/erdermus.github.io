@@ -61,7 +61,7 @@ Promise.all([
 
     // ----- define axis for line chart for tourism-data -----
     let xLineChart = d3.scaleLinear().range([0, width]);
-    let yLineChart = d3.scaleLinear().range([height, 0]).domain([0, 1000000]);
+    let yLineChart = d3.scaleLinear().range([height, 0]).domain([0, 1900000]);
     let line = d3.line().x(function(d) { return xLineChart(d.MONAT); }).y(function(d) { return yLineChart(d.WERT); }).curve(d3.curveMonotoneX);
     let color = d3.scaleOrdinal().range(['#e41a1c','#377eb8','#4daf4a'])
     let yaxis = d3.axisLeft().scale(yLineChart);
@@ -93,7 +93,9 @@ Promise.all([
         let dataFilter3 = selectedData[2].filter( d => d.JAHR == selectedYear && d.MONATSZAHL == 'Arbeitslose').map(function(d) {return {MONAT: d.MONAT, WERT: d.WERT}})
 
         // visualization of line chart for tourism-data
-        let tourismLineData = tourismData.filter( d => d.JAHR == selectedYear && !isNaN(d.MONAT) && d.MONATSZAHL == 'Gäste').map(d => {return {MONAT: d.MONAT, WERT: d.WERT, AUSPRÄGUNG: d.AUSPRÄGUNG}});
+
+        // let tourismLineData = tourismData.filter( d => d.JAHR == selectedYear && !isNaN(d.MONAT) && d.MONATSZAHL == 'Gäste').map(d => {return {MONAT: d.MONAT, WERT: d.WERT, AUSPRÄGUNG: d.AUSPRÄGUNG}});
+        let tourismLineData = tourismData.filter( d => d.JAHR == selectedYear && !isNaN(d.MONAT) && (d.MONATSZAHL == 'Gäste' || d.MONATSZAHL == 'Übernachtungen')).map(d => {return {MONAT: d.MONAT, WERT: d.WERT, AUSPRÄGUNG: d.AUSPRÄGUNG}});
         let linechartGroup = d3.group(tourismLineData, d => d.AUSPRÄGUNG);
 
         xLineChart.domain(d3.extent(tourismLineData, function(d) { return d.MONAT;}))
@@ -167,11 +169,14 @@ Promise.all([
 });
 
 function selectedYear(elem) {
-    let options = document.getElementById('tickyear').getElementsByTagName('option');
-    let value = [];
-    for (let i = 0; i < options.length; i+=1) {
-        value.push(options[i].value);
-    }
-    const result = document.querySelector('.year-content');
-    result.textContent = elem.value;
+    const result = document.getElementById('year-content');
+    if (elem.value == 2019) {
+        result.textContent = "content for 2019"
+    } else if (elem.value == 2020) {
+        result.textContent = "content for 2020"
+    } else if (elem.value == 2021) {
+        result.textContent = "content for 2021"
+    } else if (elem.value == 2022) {
+        result.textContent = "content for 2022"
+    } 
 }

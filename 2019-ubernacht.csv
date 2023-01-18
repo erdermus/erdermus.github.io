@@ -1,0 +1,19 @@
+;Übernachtungen je EW;
+;;
+schluessel;regionaleinheit;wert
+01;Schleswig-Holstein;10.9
+02;Hamburg;8.3
+03;Niedersachsen;5.8
+04;Bremen;4.1
+05;Nordrhein-Westfalen;3
+06;Hessen;5.7
+07;Rheinland-Pfalz;4.9
+08;Baden-Württemberg;5.2
+09;Bayern;7.7
+10;Saarland;3.3
+11;Berlin;9.3
+12;Brandenburg;5.6
+13;Mecklenburg-Vorpommern;21.2
+14;Sachsen;5.1
+15;Sachsen-Anhalt;3.9
+16;Thüringen;4.5

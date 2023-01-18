@@ -1,4 +1,4 @@
-Statistik_Code,Statistik_Label,Zeit_Code,Zeit_Label,Zeit,1_Merkmal_Code,1_Merkmal_Label,1_Auspraegung_Code,1_Auspraegung_Label,GAST01__Ankuenfte__Anzahl,GAST02__Uebernachtungen__Anzahl
+Statistik_Code,Statistik_Label,Zeit_Code,Zeit_Label,Zeit,1_Merkmal_Code,1_Merkmal_Label,Code,Label,Ankuenfte,Uebernachtungen
 45412,Monatserhebung im Tourismus,JAHR,Jahr,2019,DLAND,Bundesländer,08,Baden-Württemberg,23274159,57187271
 45412,Monatserhebung im Tourismus,JAHR,Jahr,2019,DLAND,Bundesländer,09,Bayern,40010919,100911480
 45412,Monatserhebung im Tourismus,JAHR,Jahr,2019,DLAND,Bundesländer,11,Berlin,13963345,34124364

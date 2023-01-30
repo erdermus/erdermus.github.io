@@ -97,6 +97,7 @@ Promise.all([
         // let tourismLineData = tourismData.filter( d => d.JAHR == selectedYear && !isNaN(d.MONAT) && d.MONATSZAHL == 'Gäste').map(d => {return {MONAT: d.MONAT, WERT: d.WERT, AUSPRÄGUNG: d.AUSPRÄGUNG}});
         let tourismLineData = tourismData.filter( d => d.JAHR == selectedYear && !isNaN(d.MONAT) && (d.MONATSZAHL == 'Gäste' || d.MONATSZAHL == 'Übernachtungen')).map(d => {return {MONAT: d.MONAT, WERT: d.WERT, AUSPRÄGUNG: d.AUSPRÄGUNG}});
         let linechartGroup = d3.group(tourismLineData, d => d.AUSPRÄGUNG);
+        console.log(linechartGroup)
 
         xLineChart.domain(d3.extent(tourismLineData, function(d) { return d.MONAT;}))
         let xaxis = d3.axisBottom().scale(xLineChart).tickFormat((d,i) => months[i]);

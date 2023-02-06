@@ -325,9 +325,10 @@ function changeState() {
     const ankunft = document.querySelector('.ankunft-content');
     const uebernacht = document.querySelector('.uebernachtung-content');
     const avg = document.querySelector('.avg-content');
+    const formatter = new Intl.NumberFormat('en-US')
     federal.textContent = currentState;
-    ankunft.textContent = "Total arrivals: " + currentAnkunft;
-    uebernacht.textContent = "Total overnight stays: " + currentUebernachtung;
+    ankunft.textContent = "Total arrivals: " + formatter.format(currentAnkunft);
+    uebernacht.textContent = "Total overnight stays: " + formatter.format(currentUebernachtung);
     avg.textContent = "Average days spent overnight: " + avgUebernachtung;
 };
 

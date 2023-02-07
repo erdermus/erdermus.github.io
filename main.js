@@ -250,7 +250,7 @@ d3.json("https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_b
                                 selectDataarrivals = testArr[iarrivals]
                                 focusovernight.attr("cx", xLineChart(selectDataovernight.Code_Monat)).attr("cy", yLineChart(selectDataovernight.Wert))
                                 focusarrivals.attr("cx", xLineChart(selectDataarrivals.Code_Monat)).attr("cy", yLineChart(selectDataarrivals.Wert))
-                                focustext.html("Overnight Stays: " + selectDataovernight.Wert + "   |   " + "Arrivals:" + selectDataarrivals.Wert)
+                                focustext.html("Overnight Stays: " + selectDataovernight.Wert + "   |   " + "Arrivals: " + selectDataarrivals.Wert)
                             }
                             function svgmouseout() {
                                 focusovernight.style("opacity", 0)

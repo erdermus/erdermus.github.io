@@ -231,7 +231,7 @@ d3.json("https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_b
                             var focustext = svgline.append('g').append('text').style("opacity", 0).attr("text-anchor", "left").attr("alignment-baseline", "middle").attr("x", 180).attr("y", -20).style("font-size", "12px")
                             
 
-                            svgline.append('rect').style('fill', 'none').style('pointer-events', 'all').attr('width', 600).attr('height', 400)
+                            svgline.append('rect').style('fill', 'none').style('pointer-events', 'all').attr('width', 550).attr('height', 420)
                                 .on('mouseover', svgmouseover)
                                 .on('mousemove', svgmousemove)
                                 .on('mouseout', svgmouseout);

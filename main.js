@@ -152,6 +152,8 @@ d3.json("https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_b
 
                         /* create new Array with filtered data and adjust its structure */
                         let to_display = [];
+                        let testOver = []
+                        let testArr = []
                         filteredData.forEach(da => {
                             let tempAnk = {};
                             tempAnk.Code_Monat = da.Code_Monat,
@@ -163,6 +165,8 @@ d3.json("https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_b
                                 tempUeb.Wert = da.Uebernachtungen;
                             to_display.push(tempAnk);
                             to_display.push(tempUeb);
+                            testOver.push(tempUeb)
+                            testArr.push(tempAnk)
                         })
 
                         let sumdata = d3.nest()
@@ -219,6 +223,40 @@ d3.json("https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_b
                             })
                             .attr('stroke-width', 1.5)
                             .attr('fill', 'none');
+
+                            var bisect = d3.bisector(function(da) {return da.Code_Monat; }).left;
+
+                            var focusovernight = svgline.append('g').append('circle').style("fill", "none").attr("stroke", "#1E88E5").attr('r', 8.5).style("opacity", 0)
+                            var focusarrivals = svgline.append('g').append('circle').style("fill", "none").attr("stroke", "#D81B60").attr('r', 8.5).style("opacity", 0)
+                            var focustext = svgline.append('g').append('text').style("opacity", 0).attr("text-anchor", "left").attr("alignment-baseline", "middle").attr("x", 180).attr("y", -20).style("font-size", "12px")
+                            
+
+                            svgline.append('rect').style('fill', 'none').style('pointer-events', 'all').attr('width', 600).attr('height', 400)
+                                .on('mouseover', svgmouseover)
+                                .on('mousemove', svgmousemove)
+                                .on('mouseout', svgmouseout);
+
+                            function svgmouseover() {
+                                focusovernight.style("opacity", 1)
+                                focusarrivals.style("opacity", 1)
+                                focustext.style("opacity",1)
+                            }
+                            function svgmousemove() {
+                                var x0 = xLineChart.invert(d3.mouse(this)[0]);
+                                var iovernight = bisect(testOver, x0, 0);
+                                var iarrivals = bisect(testArr, x0, 0);
+
+                                selectDataovernight = testOver[iovernight]
+                                selectDataarrivals = testArr[iarrivals]
+                                focusovernight.attr("cx", xLineChart(selectDataovernight.Code_Monat)).attr("cy", yLineChart(selectDataovernight.Wert))
+                                focusarrivals.attr("cx", xLineChart(selectDataarrivals.Code_Monat)).attr("cy", yLineChart(selectDataarrivals.Wert))
+                                focustext.html("Overnight Stays: " + selectDataovernight.Wert + "   |   " + "Arrivals:" + selectDataarrivals.Wert)
+                            }
+                            function svgmouseout() {
+                                focusovernight.style("opacity", 0)
+                                focusarrivals.style("opacity", 0)
+                                focustext.style("opacity",0)
+                            }
                     });
                 }
             }

@@ -324,7 +324,7 @@ form {
 }
 
 input[type="radio"] {
-    /* -webkit-appearance: none; */
+    -webkit-appearance: none;
     appearance: none;
     margin: 0;
     font: inherit;

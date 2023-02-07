@@ -245,12 +245,13 @@ d3.json("https://raw.githubusercontent.com/isellsoap/deutschlandGeoJSON/main/2_b
                                 var x0 = xLineChart.invert(d3.mouse(this)[0]);
                                 var iovernight = bisect(testOver, x0, 0);
                                 var iarrivals = bisect(testArr, x0, 0);
+                                const formatter = new Intl.NumberFormat('en-US')
 
                                 selectDataovernight = testOver[iovernight]
                                 selectDataarrivals = testArr[iarrivals]
                                 focusovernight.attr("cx", xLineChart(selectDataovernight.Code_Monat)).attr("cy", yLineChart(selectDataovernight.Wert))
                                 focusarrivals.attr("cx", xLineChart(selectDataarrivals.Code_Monat)).attr("cy", yLineChart(selectDataarrivals.Wert))
-                                focustext.html("Overnight Stays: " + selectDataovernight.Wert + "   |   " + "Arrivals: " + selectDataarrivals.Wert)
+                                focustext.html("Overnight Stays: " + formatter.format(selectDataovernight.Wert) + "   |   " + "Arrivals: " + formatter.format(selectDataarrivals.Wert))
                             }
                             function svgmouseout() {
                                 focusovernight.style("opacity", 0)

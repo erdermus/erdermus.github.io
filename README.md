@@ -1,3 +1,3 @@
-# erdermus.github.io
+# etcado.github.io
 
-This webpage is used to host our project to visualize how covid-19 affected the trousim in munich.
+this is my portfolio

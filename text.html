@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio</title>
+<style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+    }
+    .container {
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        position: relative;
+        background-color: white;
+        padding: 20px 0;
+    }
+    .column {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: calc(50% - 70px);
+        box-sizing: border-box;
+        overflow-y: auto;
+        max-height: 100vh;
+        transition: width 0.5s ease;
+    }
+    .column.small {
+        width: calc(40% - 70px);
+    }
+    .middle {
+        position: relative;
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        cursor: pointer;
+        background-color: white;
+        padding: 0 10px;
+        z-index: 1;
+    }
+    .middle:hover {
+        text-decoration: underline;
+    }
+    .info {
+        display: none;
+        width: 0;
+        background-color: white;
+        padding: 20px;
+        overflow-y: auto;
+        max-height: 100%;
+        box-sizing: border-box;
+        transition: width 0.5s ease;
+    }
+    img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <div class="column" id="column1">
+        <!-- Add your images here for the first column -->
+        <img src="image1.jpg" alt="Image 1">
+        <img src="image2.jpg" alt="Image 2">
+        <img src="image3.jpg" alt="Image 3">
+        <img src="image4.jpg" alt="Image 4">
+        <!-- ... -->
+    </div>
+    <div class="middle" id="middle" onclick="toggleInfo()">Your Name</div>
+    <div class="info" id="info">
+        <p>
+            <!-- Add your information here -->
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+        </p>
+    </div>
+    <div class="column" id="column2">
+        <!-- Add your images here for the second column -->
+        <img src="image3.jpg" alt="Image 3">
+        <img src="image4.jpg" alt="Image 4">
+        <!-- ... -->
+    </div>
+</div>
+<script>
+function toggleInfo() {
+    var info = document.getElementById('info');
+    var middle = document.getElementById('middle');
+    var column1 = document.getElementById('column1');
+    var column2 = document.getElementById('column2');
+    
+    if (info.style.display === 'none') {
+        info.style.display = 'block';
+        info.style.width = '300px';
+        middle.innerHTML = 'X';
+        setTimeout(function() {
+            column1.classList.add('small');
+            column2.classList.add('small');
+        }, 250); // Timeout equal to the transition duration
+    } else {
+        info.style.width = '0';
+        column1.classList.remove('small');
+        column2.classList.remove('small');
+        middle.innerHTML = 'Your Name';
+        setTimeout(function() {
+            info.style.display = 'none';
+        }, 250); // Timeout equal to the transition duration
+    }
+}
+
+</script>
+</body>
+</html>

@@ -19,11 +19,10 @@ body {
     flex-direction: column;
     width: calc(50% - 70px);
     box-sizing: border-box;
-    overflow-y: hidden;
+    overflow: hidden;
     height: calc(100vh - 40px);
     transition: width 0.5s ease, margin 0.5s ease;
     margin: 0 20px;
-    /* margin-left: 60px; */
 }
 .middle {
     position: relative;
@@ -31,7 +30,6 @@ body {
     text-orientation: upright;
     cursor: pointer;
     background-color: white;
-    /* padding: 0 10px; */
     padding: 20px 10px;
     z-index: 1;
     display: flex;
@@ -59,25 +57,11 @@ img {
     object-fit: cover;
     margin-bottom: 10px;
 }
-.m-scroll {
-    overflow: hidden;
-    height: 100%;
-    white-space: nowrap;
-    animation: scrollText 10s infinite linear;
-    margin: 0;
-    font-size: 0;
-    /* display: flex; */
-    justify-content: space-between;
-    width: fit-content;
-  }
-
 .scroll-container {
     display: flex;
     flex-direction: column;
-    animation: scrollImages 20s linear infinite;
-    padding-bottom: 100%;
+    animation: scrollImages linear infinite;
 }
-
 @keyframes scrollImages {
     0% {
         transform: translateY(0);
